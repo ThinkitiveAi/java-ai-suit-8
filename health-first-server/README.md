@@ -1,119 +1,72 @@
-# Health First EMR System
+# Health First Server
 
-A Spring Boot 3.2.5 backend for a healthcare provider management system.
+A comprehensive healthcare backend module with JWT authentication, user registration, and provider availability management.
 
 ## Features
 
-- Provider registration with validation
-- Email verification (simulated)
-- Security with JWT authentication
-- Rate limiting for API endpoints
-- Comprehensive error handling
-- API documentation with OpenAPI/Swagger
+- **Authentication & Authorization**
+  - JWT-based authentication
+  - Role-based access control (Provider, Patient)
+  - Secure password storage
 
-## Technology Stack
+- **User Management**
+  - Provider registration and login
+  - Patient registration and login
+  - User profile management
+
+- **Provider Availability**
+  - Create, read, update, delete availability slots
+  - Recurring availability patterns (daily, weekly, monthly)
+  - Advanced search capabilities
+
+## Tech Stack
 
 - Java 17
-- Spring Boot 3.2.5
+- Spring Boot 3.x
 - Spring Security
 - Spring Data JPA
-- H2 Database (for development)
-- JWT for authentication
-- OpenAPI/Swagger for documentation
-
-## Getting Started
-
-### Prerequisites
-
-- Java 17 or higher
-- Maven
-
-### Running the Application
-
-1. Clone the repository
-2. Navigate to the project directory
-3. Run the application using Maven:
-
-```bash
-mvn spring-boot:run
-```
-
-The application will start on port 8080.
-
-### API Documentation
-
-Once the application is running, you can access the API documentation at:
-
-```
-http://localhost:8080/swagger-ui.html
-```
+- H2 Database (in-memory)
+- JWT Authentication
+- Lombok
+- MapStruct
+- Validation API
 
 ## API Endpoints
 
-### Provider Registration
+### Authentication
 
-**Endpoint:** `POST /api/v1/provider/register`
+- `POST /api/v1/auth/provider-register` - Register a new provider
+- `POST /api/v1/auth/patient-register` - Register a new patient
+- `POST /api/v1/auth/provider-login` - Login as provider
+- `POST /api/v1/auth/patient-login` - Login as patient
 
-**Request Body:**
-```json
-{
-  "firstName": "John",
-  "lastName": "Doe",
-  "email": "john.doe@example.com",
-  "phoneNumber": "1234567890",
-  "password": "Password1!",
-  "confirmPassword": "Password1!",
-  "specialization": "Cardiology",
-  "licenseNumber": "LIC12345",
-  "licenseDocumentUrl": "https://example.com/license.pdf",
-  "yearsOfExperience": 5,
-  "clinicAddress": {
-    "street": "123 Main St",
-    "city": "Boston",
-    "state": "MA",
-    "zip": "02108"
-  }
-}
-```
+### Provider Availability
 
-**Success Response (201 Created):**
-```json
-{
-  "success": true,
-  "message": "Provider registered successfully. Verification email sent.",
-  "data": {
-    "providerId": "uuid-here",
-    "email": "john.doe@example.com",
-    "verificationStatus": "PENDING"
-  },
-  "timestamp": "2023-06-01T12:00:00Z"
-}
-```
+- `POST /api/v1/provider/{providerId}/availability` - Create availability
+- `POST /api/v1/provider/{providerId}/availability/recurring` - Create recurring availability
+- `GET /api/v1/provider/{providerId}/availability` - Get provider's availability
+- `GET /api/v1/availability/{id}` - Get availability by ID
+- `PUT /api/v1/provider/availability/{id}` - Update availability
+- `DELETE /api/v1/provider/availability/{id}` - Delete availability
+- `DELETE /api/v1/provider/availability/{id}/recurring` - Delete recurring availability
 
-### Email Verification
+### Availability Search
 
-**Endpoint:** `GET /api/v1/provider/verify?token=verification-token`
+- `GET /api/v1/availability/search` - Search availabilities with filters
+- `GET /api/v1/availability/search/specialization/{specialization}` - Search by specialization
+- `GET /api/v1/availability/search/appointment-type/{appointmentType}` - Search by appointment type
 
-**Success Response (200 OK):**
-```json
-{
-  "success": true,
-  "message": "Email verification successful. You can now log in.",
-  "timestamp": "2023-06-01T12:00:00Z"
-}
-```
+## Getting Started
 
-## Testing
-
-Run the tests using Maven:
-
-```bash
-mvn test
-```
+1. Clone the repository
+2. Build the project: `./mvnw clean install`
+3. Run the application: `./mvnw spring-boot:run`
+4. Access the API at `http://localhost:8080`
+5. Access H2 console at `http://localhost:8080/h2-console` (JDBC URL: `jdbc:h2:mem:healthfirstdb`, Username: `sa`, Password: empty)
 
 ## Security
 
-- Password hashing using BCrypt with salt rounds of 12
-- Input sanitization for all fields
-- Rate limiting (5 requests per IP/hour for registration)
-- JWT authentication for protected endpoints 
+- All endpoints except authentication endpoints require JWT authentication
+- Provider-specific endpoints require PROVIDER role
+- Patient-specific endpoints require PATIENT role
+- JWT tokens expire after 24 hours 

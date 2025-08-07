@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ai.zencoder.plugin.chat.index">
+    <option name="activeChatId" value="2a1530c1-c308-48c6-89ad-77d080f38c57" />
+    <option name="chatMetadata" value="{&quot;2a1530c1-c308-48c6-89ad-77d080f38c57&quot;:{&quot;id&quot;:&quot;2a1530c1-c308-48c6-89ad-77d080f38c57&quot;,&quot;title&quot;:&quot;Code Refactoring and Error Resolution&quot;,&quot;createdAt&quot;:1753957050031,&quot;updatedAt&quot;:1753957295401,&quot;isNameGenerated&quot;:true,&quot;messageCount&quot;:4,&quot;lastMessagePreview&quot;:&quot;The issue you're encountering is due to the absence of the `existsByPhoneNumber` and `existsByLicens...&quot;}}" />
+  </component>
+</project>
