@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -22,9 +24,6 @@ public class ApiResponse<T> {
     private T data;
     
     private Map<String, Object> metadata;
-    
-    @Builder.Default
-    private LocalDateTime timestamp = LocalDateTime.now();
     
     public static <T> ApiResponse<T> success(T data) {
         return ApiResponse.<T>builder()
